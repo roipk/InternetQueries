@@ -1,10 +1,12 @@
-import sys
 import os
-import struct
-import numpy as np
+import operator
+import re
+
 
 class IndexWriter:
-
+    Term=''
+    docId=0
+    indexer = []
 
     def __init__(self, inputFile, dir):
         """Given a collection of documents,
@@ -12,26 +14,33 @@ class IndexWriter:
         containing the review data (the path includes the filename itself)
         dir is the name of the directory in which all index files will be created
         if the directory does not exist, it should be created"""
+        self.Term = ''
+        self.docId = 0
 
-        count = 0
+        count = 1
         readfile = open(inputFile, "r")
         s = readfile.readline()
-        reads = []
-        numMesmah = []
         while s:
             if s[0] == '*':
-                reads.append(readfile.readline())
-                numMesmah.append(count)
+                line = readfile.readline()
+                words=line.split()
+                for i in words:
+                    i = i.lower()
+                    i  = i.replace('!' , ' ')
+                    i  = i.replace('.', ' ')
+                    i  = i.replace('-', ' ')
+                    i = i.replace(',', ' ')
+                    i  = i.replace('?', ' ')
+                    r = re.sub(r'!'or r'.'or r','or r'?' or r'-' , ' ', i)
+                    r = r.split()
+                    for j in r:
+                        if 'a' <= j[0] <= 'z':  # Ignore special signs
+                                self.indexer.append((j, count))
                 count += 1
-            # print(s)
+                self.indexer = list(dict.fromkeys(self.indexer)) #remove duplicates
+                self.indexer.sort(key = operator.itemgetter(0)) #Sort the lists by AB
             s = readfile.readline()
-        readfile.close()
-        s = bytearray(numMesmah)
-
-        newFile = open(dir + "\TempFile", "wb")
-        # newFileByteArray = bytearray(newFileBytes)
-        newFile.write(s)
-        newFile.close()
+        print(self.indexer)
 
 
 
