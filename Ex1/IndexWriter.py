@@ -9,7 +9,8 @@ class IndexWriter:
     Term=''
     docId=0
     indexer = []
-
+    f_tuple = []
+    temp_indexer= []
     def __init__(self, inputFile, dir):
         """Given a collection of documents,
         creates an on disk index inputFile is the path to the file
@@ -19,6 +20,10 @@ class IndexWriter:
         self.Term = ''
         self.docId = 0
         self.indexer = []
+        frequency = 1
+        self.f_tuple=[]
+        self.temp_indexer = []
+
         count = 1
         readfile = open(inputFile, "r")
         s = readfile.readline()
@@ -27,34 +32,55 @@ class IndexWriter:
                 line = readfile.readline()
                 words=line.split()
                 for i in words:
+                    i = re.sub('[^A-Za-z0-9]'," ", i)
                     i = i.lower()
-                    i = i.replace('!' , ' ')
-                    i = i.replace('&', ' ')
-                    i = i.replace('.', ' ')
-                    i = i.replace('-', ' ')
-                    i = i.replace(',', ' ')
-                    i = i.replace('?', ' ')
-                    i = i.replace(']', ' ')
-                    i = i.replace('[', ' ')
-                    i = i.replace('}', ' ')
-                    i = i.replace('{', ' ')
-                    r = re.sub(r'!'or r'.'or r','or r'?' or r'-' , ' ', i)
-                    r = r.split()
+                    r = i.split()
                     for j in r:
                         if 'a' <= j[0] <= 'z':  # Ignore special signs
-                            self.indexer.append((j, count))
+                            self.temp_indexer.append(j)
+                    if len(i)!= len(r):
+                            self.temp_indexer.append(i)
+
+
+                            #print r
+
+
+                firstWord = ""
+                frequency = 1
+                self.temp_indexer.sort() #Sort the lists by AB
+                print ("11111",self.temp_indexer)
+
+
+                for k in range(0,len(self.temp_indexer)-1):
+                    print (k)
+                    firstWord = self.temp_indexer(k)
+                    if firstWord != self.temp_indexer(k+1):
+                        self.indexer.append((firstWord, count, frequency))
+                        frequency = 1
+                    else:
+                        frequency += 1
+
+                if frequency > 1:
+                     self.indexer.append((firstWord, count, frequency))
+
                 count += 1
+
+                # print (self.f_tuple )
+                print ("2222",self.indexer)
+
                 self.indexer = list(dict.fromkeys(self.indexer)) #remove duplicates
                 self.indexer.sort(key = operator.itemgetter(0)) #Sort the lists by AB
+                # print(self.indexer)
             s = readfile.readline()
-        # print(self.indexer)
         ch = 'a'
         s = ""
         backword = ""
         directory = "{}\{}".format(dir,'a-z')
+        # print (self.indexer)
         for word in self.indexer:
+
             while word[0][0] != ch:
-                # print(s)
+
                 if not os.path.exists(directory):
                     os.makedirs(directory)
                 charfile = open("{}\{}.txt".format(directory,ch), "w")
@@ -65,12 +91,12 @@ class IndexWriter:
                 # print (ch)
                 ch = chr(ord(ch) + 1)
             if len(s) == 0:
-                s = ("{} {}".format(word[0],word[1]))
+                s = ("{} {}\\{}".format(word[0],word[1],word[3]))
                 backword = word[0]
             elif backword == word[0]:
-                s = ("{} {}".format(s,word[1]))
+                s = ("{} {}\\{}".format(s,word[1]),word[3])
             else:
-                s = ("{} | {} {}".format(s, word[0], word[1]))
+                s = ("{} | {} {}\\{}".format(s, word[0], word[1],word[3]))
                 backword = word[0]
 
 
@@ -101,6 +127,6 @@ if __name__ =="__main__":
     time1 = asctime()
     print(time1)
     dir = os.getcwd()
-    IW = IndexWriter('10000000.txt',dir)
+    IW = IndexWriter('test4.txt',dir)
     time2 = asctime()
     print(time2)
