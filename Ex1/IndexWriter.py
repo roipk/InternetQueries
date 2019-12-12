@@ -70,10 +70,6 @@ class IndexWriter:
 
 
                 count += 1
-
-                # print (self.f_tuple )
-                # print ("2222",self.indexer)
-
                 # self.indexer = list(dict.fromkeys(self.indexer)) #remove duplicates
                 self.indexer.sort(key = operator.itemgetter(0)) #Sort the lists by AB
                 # print(self.indexer)
@@ -96,13 +92,13 @@ class IndexWriter:
                 if not os.path.exists(directory):
                     os.makedirs(directory)
                 if len(s) > 0:
-                    # print(s)
-                    if ch > '9' and ch < 'a':
-                        numbers+="{} | ".format(s)
-                    else:
-                        charfile = open("{}\{}.txt".format(directory,ch), "w")
-                        charfile.write(s)
-                        charfile.close()
+                    # # print(s)
+                    # if ch > '9' and ch < 'a':
+                    #     numbers+="{} | ".format(s)
+                    # else:
+                    charfile = open("{}\{}.txt".format(directory,ch), "w")
+                    charfile.write(s)
+                    charfile.close()
                 s = ""
                 backword = ""
 
@@ -121,20 +117,9 @@ class IndexWriter:
                 s = ("{} | {} {}\\{}".format(s, word[0], word[1],word[2]))
                 backword = word[0]
 
-
-
         charfile = open("{}\{}.txt".format(directory,ch), "w")
         charfile.write(s)
         charfile.close()
-        charfile = open("{}\\numbers.txt".format(directory), "w")
-        charfile.write(numbers[:-2])
-        charfile.close()
-        # print(s)
-#     for char in  range(97,123):
-        #         if word[0][0] == ch:
-        #             print(ch)
-        #         ch = '{}'.format(chr(char))
-
 
 
 
