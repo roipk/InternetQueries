@@ -36,10 +36,13 @@ class IndexWriter:
                     i = i.lower()
                     r = i.split()
                     for j in r:
-                        if 'a' <= j[0] <= 'z':  # Ignore special signs
+                        if ('a' <= j[0] <= 'z') or ('0' <= j[0] <= '9'):  # Ignore special signs
                             self.temp_indexer.append(j)
-                    if len(i)!= len(r):
-                            self.temp_indexer.append(i)
+                    # if i == '   ':
+                    #     print(len(r))
+                    #
+                    # if len(i)!= len(r):
+                    #         self.temp_indexer.append(i)
 
 
                             #print r
@@ -48,55 +51,74 @@ class IndexWriter:
                 firstWord = ""
                 frequency = 1
                 self.temp_indexer.sort() #Sort the lists by AB
-                print ("11111",self.temp_indexer)
+                # print ("11111",self.temp_indexer)
 
-
+                # a a a
                 for k in range(0,len(self.temp_indexer)-1):
-                    print (k)
-                    firstWord = self.temp_indexer(k)
-                    if firstWord != self.temp_indexer(k+1):
+                    firstWord = self.temp_indexer[k]
+                    if  firstWord != self.temp_indexer[k+1]:
                         self.indexer.append((firstWord, count, frequency))
                         frequency = 1
                     else:
                         frequency += 1
 
-                if frequency > 1:
-                     self.indexer.append((firstWord, count, frequency))
+                if self.temp_indexer[k] == firstWord:
+                    if frequency > 1:
+                         self.indexer.append((firstWord, count, frequency))
+                    else:
+                        self.indexer.append((self.temp_indexer[k], count, 1))
+
 
                 count += 1
 
                 # print (self.f_tuple )
-                print ("2222",self.indexer)
+                # print ("2222",self.indexer)
 
-                self.indexer = list(dict.fromkeys(self.indexer)) #remove duplicates
+                # self.indexer = list(dict.fromkeys(self.indexer)) #remove duplicates
                 self.indexer.sort(key = operator.itemgetter(0)) #Sort the lists by AB
                 # print(self.indexer)
             s = readfile.readline()
-        ch = 'a'
+        ch = '0'
         s = ""
         backword = ""
         directory = "{}\{}".format(dir,'a-z')
-        # print (self.indexer)
+        print (self.indexer)
         for word in self.indexer:
+            # print("word = {}".format(word[0][0]))
 
+            # for i in range(10):
+            #     if word[0][0] == "{}".format(i):
+            #         charfile = open("{}\\numbers.txt".format(directory), "w")
+            #         charfile.write(s)
+            #         charfile.close()
+            numbers = ""
             while word[0][0] != ch:
-
                 if not os.path.exists(directory):
                     os.makedirs(directory)
-                charfile = open("{}\{}.txt".format(directory,ch), "w")
-                charfile.write(s)
-                charfile.close()
+                if len(s) > 0:
+                    # print(s)
+                    if ch > '9' and ch < 'a':
+                        numbers+="{} | ".format(s)
+                    else:
+                        charfile = open("{}\{}.txt".format(directory,ch), "w")
+                        charfile.write(s)
+                        charfile.close()
                 s = ""
                 backword = ""
-                # print (ch)
+
                 ch = chr(ord(ch) + 1)
+                if ch > '9' and ch < 'a' :
+                    ch = 'a'
+
+
+
             if len(s) == 0:
-                s = ("{} {}\\{}".format(word[0],word[1],word[3]))
+                s = ("{} {}\\{}".format(word[0],word[1],word[2]))
                 backword = word[0]
             elif backword == word[0]:
-                s = ("{} {}\\{}".format(s,word[1]),word[3])
+                s = ("{} {}\\{}".format(s,word[1],word[2]))
             else:
-                s = ("{} | {} {}\\{}".format(s, word[0], word[1],word[3]))
+                s = ("{} | {} {}\\{}".format(s, word[0], word[1],word[2]))
                 backword = word[0]
 
 
@@ -104,6 +126,10 @@ class IndexWriter:
         charfile = open("{}\{}.txt".format(directory,ch), "w")
         charfile.write(s)
         charfile.close()
+        charfile = open("{}\\numbers.txt".format(directory), "w")
+        charfile.write(numbers[:-2])
+        charfile.close()
+        # print(s)
 #     for char in  range(97,123):
         #         if word[0][0] == ch:
         #             print(ch)
