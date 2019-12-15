@@ -1,6 +1,7 @@
 import os
 import operator
 import re
+import zlib
 import string
 from time import gmtime, asctime, time, sleep
 
@@ -31,7 +32,7 @@ class IndexWriter:
             if s[0] == '*':
                 self.temp_indexer = []
                 line = readfile.readline()
-                words=line.split()
+                words = line.split()
                 for i in words:
                     i = re.sub('[^A-Za-z0-9]'," ", i)
                     i = i.lower()
@@ -41,10 +42,9 @@ class IndexWriter:
                             self.temp_indexer.append(j)
                 firstWord = ""
                 frequency = 1
-                self.temp_indexer.sort() #Sort the lists by AB
+                # self.temp_indexer.sort() #Sort the lists by AB
 
                 for k in range(0,len(self.temp_indexer)-1):
-                    print(self.temp_indexer[k])
                     firstWord = self.temp_indexer[k]
                     if  firstWord != self.temp_indexer[k+1]:
                         self.indexer.append((firstWord, count, frequency))
@@ -61,22 +61,25 @@ class IndexWriter:
 
                 count += 1
                 # self.indexer = list(dict.fromkeys(self.indexer)) #remove duplicates
-                self.indexer.sort(key = operator.itemgetter(0)) #Sort the lists by AB
+
                 # print(self.indexer)
             s = readfile.readline()
+        self.indexer.sort(key=operator.itemgetter(0))  # Sort the lists by AB
         ch = '0'
         s = ""
         backword = ""
         directory = "{}\{}".format(dir,'a-z')
-        print (self.indexer)
+        # print (self.indexer)
         for word in self.indexer:
             numbers = ""
             while word[0][0] != ch:
                 if not os.path.exists(directory):
                     os.makedirs(directory)
                 if len(s) > 0:
-                    charfile = open("{}\{}.txt".format(directory,ch), "w")
-                    charfile.write(s)
+                    charfile = open("{}\{}.bin".format(directory,ch), "wb")
+
+                    sb = zlib.compress(s.encode('utf-8'))
+                    charfile.write(sb)
                     charfile.close()
                 s = ""
                 backword = ""
@@ -88,17 +91,50 @@ class IndexWriter:
 
 
             if len(s) == 0:
-                s = ("{} {}\\{}".format(word[0],word[1],word[2]))
+                s = ("{}-{}:{}".format(word[0],word[1],word[2]))
                 backword = word[0]
             elif backword == word[0]:
-                s = ("{} {}\\{}".format(s,word[1],word[2]))
+                s = ("{}-{}:{}".format(s,word[1],word[2]))
             else:
-                s = ("{} | {} {}\\{}".format(s, word[0], word[1],word[2]))
+                s = ("{}|{}-{}:{}".format(s, word[0], word[1],word[2]))
                 backword = word[0]
 
-        charfile = open("{}\{}.txt".format(directory,ch), "w")
-        charfile.write(s)
+        charfile = open("{}\{}.bin".format(directory,ch), "wb")
+        sb = zlib.compress(s.encode('utf-8'))
+        charfile.write(sb)
         charfile.close()
+
+
+
+
+
+    def findDoc(self,directory,word):
+        charfile = open("{}\\a-z\\{}.bin".format(directory, word[0]), "rb")
+        s = charfile.read()
+        charfile.close()
+        s = zlib.decompress(s).decode('utf-8')
+
+
+        wordArray = s.split("|")
+        # print(wordArray)
+        # wordArray[2]
+        # numdoc =   wordArray[2].split("-")
+        # print(numdoc)
+        # doc = numdoc[1].split(":")
+        # print(doc[0])
+        docs=[]
+        for i in wordArray:
+            numdoc = i.split("-")
+            if numdoc[0] == word:
+                # print(numdoc[0])
+                for j in range(len(numdoc)):
+                    if j > 0:
+                        doc = numdoc[j].split(":")
+                        docs.append(doc[0])
+
+        # print(docs)
+
+
 
 
 
@@ -117,6 +153,7 @@ if __name__ =="__main__":
     time1 = asctime()
     print(time1)
     dir = os.getcwd()
-    IW = IndexWriter('test4.txt',dir)
+    IW = IndexWriter('1000.txt',dir)
+    # IW.findDoc(dir,"book")
     time2 = asctime()
     print(time2)
