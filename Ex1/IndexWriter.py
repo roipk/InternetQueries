@@ -43,7 +43,7 @@ class IndexWriter:
                 firstWord = ""
                 frequency = 1
                 # self.temp_indexer.sort() #Sort the lists by AB
-
+                k=0
                 for k in range(0,len(self.temp_indexer)-1):
                     firstWord = self.temp_indexer[k]
                     if  firstWord != self.temp_indexer[k+1]:
@@ -52,7 +52,8 @@ class IndexWriter:
                     else:
                         frequency += 1
 
-                if self.temp_indexer[k] == firstWord:
+
+                if len(self.temp_indexer) > 0 and self.temp_indexer[k] == firstWord:
                     if frequency > 1:
                          self.indexer.append((firstWord, count, frequency))
                     else:
@@ -60,11 +61,18 @@ class IndexWriter:
 
 
                 count += 1
+                # if count % 10000 == 0:
+                    # print("done {} in {} time".format(count,asctime()))
+
+
                 # self.indexer = list(dict.fromkeys(self.indexer)) #remove duplicates
 
                 # print(self.indexer)
             s = readfile.readline()
+        # print("done {} in {} time".format(count, asctime()))
         self.indexer.sort(key=operator.itemgetter(0))  # Sort the lists by AB
+        # print("done sort  in {} time".format(asctime()))
+
         ch = '0'
         s = ""
         backword = ""
@@ -81,6 +89,7 @@ class IndexWriter:
                     sb = zlib.compress(s.encode('utf-8'))
                     charfile.write(sb)
                     charfile.close()
+                    # print("done write {} in {} time".format(ch,asctime()))
                 s = ""
                 backword = ""
 
@@ -91,12 +100,12 @@ class IndexWriter:
 
 
             if len(s) == 0:
-                s = ("{}-{}:{}".format(word[0],word[1],word[2]))
+                s = "{}-{}:{}".format(word[0],word[1],word[2])
                 backword = word[0]
             elif backword == word[0]:
-                s = ("{}-{}:{}".format(s,word[1],word[2]))
+                s += ("-{}:{}".format(word[1],word[2]))
             else:
-                s = ("{}|{}-{}:{}".format(s, word[0], word[1],word[2]))
+                s += ("|{}-{}:{}".format(word[0], word[1],word[2]))
                 backword = word[0]
 
         charfile = open("{}\{}.bin".format(directory,ch), "wb")
@@ -153,7 +162,7 @@ if __name__ =="__main__":
     time1 = asctime()
     print(time1)
     dir = os.getcwd()
-    IW = IndexWriter('1000.txt',dir)
+    IW = IndexWriter('10000.txt',dir)
     # IW.findDoc(dir,"book")
     time2 = asctime()
     print(time2)
