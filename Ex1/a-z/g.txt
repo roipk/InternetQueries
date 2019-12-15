@@ -1,1 +1,0 @@
-geisel 2\1 | given 2\1 | go 1\1 2\1 | good 2\2 | great 2\1

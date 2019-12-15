@@ -1,1 +1,0 @@
-s 1\2 2\7 | san 2\1 | section 1\1 2\1 | seems 2\1 | seen 2\1 | serious 2\1 | served 2\1 | service 2\1 | seuss 2\5 | shifted 2\1 | shows 2\1 | since 2\1 | six 1\1 2\1 | slaving 2\1 | so 2\2 | some 2\1 | sound 2\1 | spanking 2\1 | strain 1\1 2\1

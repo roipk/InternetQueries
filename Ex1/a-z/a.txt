@@ -1,1 +1,0 @@
-a 1\3 2\13 | about 1\2 2\2 | ad 2\1 | administer 2\1 | after 2\2 | all 2\2 | almost 2\1 | amusing 2\1 | and 1\1 2\10 | andy 2\1 | art 2\1 | artists 2\1 | as 2\4 | astrophe 2\1 | at 2\2 | awful 2\1

@@ -29,6 +29,7 @@ class IndexWriter:
         s = readfile.readline()
         while s:
             if s[0] == '*':
+                self.temp_indexer = []
                 line = readfile.readline()
                 words=line.split()
                 for i in words:
@@ -38,23 +39,12 @@ class IndexWriter:
                     for j in r:
                         if ('a' <= j[0] <= 'z') or ('0' <= j[0] <= '9'):  # Ignore special signs
                             self.temp_indexer.append(j)
-                    # if i == '   ':
-                    #     print(len(r))
-                    #
-                    # if len(i)!= len(r):
-                    #         self.temp_indexer.append(i)
-
-
-                            #print r
-
-
                 firstWord = ""
                 frequency = 1
                 self.temp_indexer.sort() #Sort the lists by AB
-                # print ("11111",self.temp_indexer)
 
-                # a a a
                 for k in range(0,len(self.temp_indexer)-1):
+                    print(self.temp_indexer[k])
                     firstWord = self.temp_indexer[k]
                     if  firstWord != self.temp_indexer[k+1]:
                         self.indexer.append((firstWord, count, frequency))
@@ -80,22 +70,11 @@ class IndexWriter:
         directory = "{}\{}".format(dir,'a-z')
         print (self.indexer)
         for word in self.indexer:
-            # print("word = {}".format(word[0][0]))
-
-            # for i in range(10):
-            #     if word[0][0] == "{}".format(i):
-            #         charfile = open("{}\\numbers.txt".format(directory), "w")
-            #         charfile.write(s)
-            #         charfile.close()
             numbers = ""
             while word[0][0] != ch:
                 if not os.path.exists(directory):
                     os.makedirs(directory)
                 if len(s) > 0:
-                    # # print(s)
-                    # if ch > '9' and ch < 'a':
-                    #     numbers+="{} | ".format(s)
-                    # else:
                     charfile = open("{}\{}.txt".format(directory,ch), "w")
                     charfile.write(s)
                     charfile.close()
