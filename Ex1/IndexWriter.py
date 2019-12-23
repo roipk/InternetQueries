@@ -159,10 +159,16 @@ class IndexWriter:
 
 if __name__ =="__main__":
     """part 1.3.1 IndexWriter"""
-    time1 = asctime()
-    print(time1)
+    time1 = time()
+
+
     dir = os.getcwd()
-    IW = IndexWriter('10000.txt',dir)
+    file = os.getcwd()+"/text file/100.txt"
+    print(asctime())
+    IW = IndexWriter(file,dir)
+    print(asctime())
     # IW.findDoc(dir,"book")
-    time2 = asctime()
-    print(time2)
+    time2 = time()
+    time3 =  time2 - time1
+
+    print(time3)

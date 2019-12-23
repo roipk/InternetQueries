@@ -5,6 +5,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/Ex1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Ex1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/100.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/1000.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/10000.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/100000.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/IndexWriter.py" beforeDir="false" afterPath="$PROJECT_DIR$/IndexWriter.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,6 +117,7 @@
       <updated>1575446501075</updated>
       <workItem from="1575446502354" duration="96000" />
       <workItem from="1576176707632" duration="5177000" />
+      <workItem from="1577096481988" duration="332000" />
     </task>
     <servers />
   </component>
@@ -157,9 +162,10 @@
     </state>
     <state width="1638" height="262" key="GridCell.Tab.0.right/0.23.1680.973@0.23.1680.973" timestamp="1576178083509" />
     <state width="1638" height="262" key="GridCell.Tab.0.right/0.23.1680.974@0.23.1680.974" timestamp="1576182155025" />
-    <state x="349" y="149" key="SettingsEditor" timestamp="1576177565776">
-      <screen x="0" y="23" width="1680" height="973" />
+    <state x="399" y="135" key="SettingsEditor" timestamp="1577096812801">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="399" y="135" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1577096812801" />
     <state x="349" y="149" key="SettingsEditor/0.23.1680.973@0.23.1680.973" timestamp="1576177565776" />
     <state x="519" y="342" key="com.intellij.ide.util.TipDialog" timestamp="1576176708409">
       <screen x="0" y="23" width="1680" height="974" />
