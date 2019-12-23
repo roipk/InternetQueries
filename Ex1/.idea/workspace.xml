@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c6eaea9-ad81-4c52-bd0c-d2062526c083" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Ex1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Ex1.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ex1.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IndexReader.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IndexWriter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TempFile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test4.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/פלט זמנים.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IndexWriter.py" beforeDir="false" afterPath="$PROJECT_DIR$/IndexWriter.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +129,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1577097105197</updated>
-      <workItem from="1577097108023" duration="173000" />
+      <workItem from="1577097108023" duration="20348000" />
     </task>
     <servers />
   </component>
@@ -157,22 +149,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1577097241322" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1577097393090">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1577123535466">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1577097393090" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1577097393090">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1577123535466" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1577123535466">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1577097393090" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1577097393089">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1577123535466" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1577123535466">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1577097393089" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1577097393090">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1577123535466" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1577123535466">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1577097393090" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1577123535466" />
     <state x="461" y="162" key="SettingsEditor" timestamp="1577097281258">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -180,6 +172,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Ex1$t.coverage" NAME="t Coverage Results" MODIFIED="1577097327177" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Ex1$IndexWriter.coverage" NAME="IndexWriter Coverage Results" MODIFIED="1577097393080" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Ex1$IndexWriter.coverage" NAME="IndexWriter Coverage Results" MODIFIED="1577123535462" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
