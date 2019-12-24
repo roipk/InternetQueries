@@ -73,13 +73,13 @@ class IndexWriter:
 
 
                 if sys.getsizeof( self.indexer)> self.maxread:
-                    print("write - {}".format(asctime()))
+                    # print("write - {}".format(asctime()))
                     self.writeToFile(dir)
                     self.blocks += 1
                     self.indexer=[]
                 count += 1
-                if count % 100000 == 0:
-                    print("done {} in {} time".format(count,asctime()))
+                # if count % 100000 == 0:
+                    # print("done {} in {} time".format(count,asctime()))
 
 
 
@@ -89,7 +89,7 @@ class IndexWriter:
             s = readfile.readline()
         # print("done {} in {} time".format(count, asctime()))
         if len(self.indexer) > 0:
-            print("write - {}".format(asctime()))
+            # print("write - {}".format(asctime()))
             self.writeToFile(dir)
 
             # self.MargeFile(dir)
@@ -124,7 +124,7 @@ class IndexWriter:
 
     def writeToFile(self,dir):
         self.indexer.sort(key=operator.itemgetter(0))  # Sort the lists by AB
-        print("done sort  in {} time".format(asctime()))
+        # print("done sort  in {} time".format(asctime()))
 
         ch = '0'
         s = ""
@@ -143,7 +143,7 @@ class IndexWriter:
                     sb = zlib.compress(s.encode('utf-8'))
                     charfile.write(sb)
                     charfile.close()
-                    print("done write {} in {} time".format(ch,asctime()))
+                    # print("done write {} in {} time".format(ch,asctime()))
                 s = ""
                 backword = ""
 
@@ -166,7 +166,7 @@ class IndexWriter:
         sb = zlib.compress(s.encode('utf-8'))
         charfile.write(sb)
         charfile.close()
-        print("done write  in {} time".format(asctime()))
+        # print("done write  in {} time".format(asctime()))
 
 
 
@@ -222,7 +222,7 @@ class IndexWriter:
                 ch = chr(ord(ch) + 1)
                 if ch > '9' and ch < 'a':
                     ch = 'a'
-        print("done create Folders  in {} time".format(asctime()))
+        # print("done create Folders  in {} time".format(asctime()))
         return
 
 
