@@ -5,6 +5,7 @@ import sys
 import zlib
 import shutil
 import string
+import datetime
 from time import gmtime, asctime, time, sleep
 
 
@@ -14,9 +15,10 @@ class IndexWriter:
     indexer = []
     f_tuple = []
     temp_indexer= []
-    maxread = 300000000
+    maxread = 250000000
     blocks = 0
     b = 40
+    startTime=""
     def __init__(self, inputFile, dir):
         """Given a collection of documents,
         creates an on disk index inputFile is the path to the file
@@ -30,63 +32,73 @@ class IndexWriter:
         self.f_tuple=[]
         self.temp_indexer = []
         self.blocks = 0
-        self.createFolders(dir)
+        self.startTime = datetime.datetime.now()
+        # self.createFolders(dir)
 
 
         count = 1
         readfile = open(inputFile, "r")
-        s = readfile.readline()
+        # s = readfile.readline()
+        s = readfile.read(self.maxread)
+        print("done read  in {} time".format(asctime()))
+        print(datetime.datetime.now() - self.startTime)
+    # def test(self,s,readfile,count):
         while s:
-            if s[0] == '*':
-                self.temp_indexer = []
-                line = readfile.readline()
-                words = line.split()
-                for i in words:
-                    i = re.sub('[^A-Za-z0-9]'," ", i)
-                    i = i.lower()
-                    r = i.split()
-                    for j in r:
-                        if ('a' <= j[0] <= 'z') or ('0' <= j[0] <= '9'):  # Ignore special signs
-                            self.temp_indexer.append(j)
-                firstWord = ""
-                frequency = 1
-                self.temp_indexer.sort() #Sort the lists by AB
-                k=0
-                for k in range(0,len(self.temp_indexer)-1):
-                    firstWord = self.temp_indexer[k]
-                    if  firstWord != self.temp_indexer[k+1]:
-                        self.indexer.append((firstWord, count, frequency))
-                        # print(firstWord, count, frequency)
-                        frequency = 1
-                    else:
-                        frequency += 1
+            # if s[0] == '*':
+            self.temp_indexer = []
+            # line = readfile.readline()
+            s = re.sub('[^A-Za-z0-9]', " ", s)
+            words = s.split()
+            for i in words:
+                # i = re.sub('[^A-Za-z0-9]'," ", i)
+                i = i.lower()
+                r = i.split()
+                for j in r:
+                    if ('a' <= j[0] <= 'z') or ('0' <= j[0] <= '9'):  # Ignore special signs
+                        self.temp_indexer.append(j)
+            print("done temp  in {} time".format(asctime()))
+            print(datetime.datetime.now() - self.startTime)
+            firstWord = ""
+            frequency = 1
+            self.temp_indexer.sort() #Sort the lists by AB
+            print("done temp sort in {} time".format(asctime()))
+            print(datetime.datetime.now() - self.startTime)
+            k=0
+            for k in range(0,len(self.temp_indexer)-1):
+                firstWord = self.temp_indexer[k]
+                if  firstWord != self.temp_indexer[k+1]:
+                    self.indexer.append((firstWord, count, frequency))
+                    # print(firstWord, count, frequency)
+                    frequency = 1
+                else:
+                    frequency += 1
 
 
-                if  len(self.temp_indexer) > 0 and  self.temp_indexer[k] == firstWord:
-                    if frequency > 1:
-                         self.indexer.append((firstWord, count, frequency))
-                         # print(firstWord, count, frequency)
-                    else:
-                        self.indexer.append((self.temp_indexer[k], count, 1))
+            if  len(self.temp_indexer) > 0 and  self.temp_indexer[k] == firstWord:
+                if frequency > 1:
+                     self.indexer.append((firstWord, count, frequency))
+                     # print(firstWord, count, frequency)
+                else:
+                    self.indexer.append((self.temp_indexer[k], count, 1))
 
-
-
-
-                if sys.getsizeof( self.indexer)> self.maxread:
-                    # print("write - {}".format(asctime()))
-                    self.writeToFile(dir)
-                    self.blocks += 1
-                    self.indexer=[]
-                count += 1
-                # if count % 100000 == 0:
-                    # print("done {} in {} time".format(count,asctime()))
+            print("done indexer  in {} time".format(asctime()))
+            print(datetime.datetime.now() - self.startTime)
+            # if sys.getsizeof( self.indexer)> self.maxread:
+            # print("write - {}".format(asctime()))
+            self.writeToFile(dir)
+            self.blocks += 1
+            self.indexer=[]
+            count += 1
+            if count % 100000 == 0:
+                print("done {} in {} time".format(count,asctime()))
 
 
 
                 # self.indexer = list(dict.fromkeys(self.indexer)) #remove duplicates
 
                 # print(self.indexer)
-            s = readfile.readline()
+            # s = readfile.readline()
+            s = readfile.read(self.maxread)
         # print("done {} in {} time".format(count, asctime()))
         if len(self.indexer) > 0:
             # print("write - {}".format(asctime()))
@@ -124,7 +136,7 @@ class IndexWriter:
 
     def writeToFile(self,dir):
         self.indexer.sort(key=operator.itemgetter(0))  # Sort the lists by AB
-        # print("done sort  in {} time".format(asctime()))
+        print("done sort  in {} time".format(asctime()))
 
         ch = '0'
         s = ""
@@ -166,8 +178,9 @@ class IndexWriter:
         sb = zlib.compress(s.encode('utf-8'))
         charfile.write(sb)
         charfile.close()
-        # print("done write  in {} time".format(asctime()))
-
+        print("done write  in {} time".format(asctime()))
+        print( datetime.datetime.now()- self.startTime)
+        self.startTime = datetime.datetime.now()
 
 
 
@@ -241,18 +254,17 @@ class IndexWriter:
 
 if __name__ =="__main__":
     """part 1.3.1 IndexWriter"""
-    time1 = time()
-
+    start = time()
+    time1 = datetime.datetime.now()
 
     dir = os.getcwd()
-    file = os.getcwd()+"/text file/10000000.txt"
+    file = os.getcwd()+"/text file/1000000.txt"
     print(asctime())
     IW = IndexWriter(file,dir)
     # IW = IndexWriter.removeIndex(dir)
 
     print(asctime())
     # IW.findDoc(dir,"book")
-    time2 = time()
+    time2 =  datetime.datetime.now()
     time3 =  time2 - time1
-
     print(time3)
