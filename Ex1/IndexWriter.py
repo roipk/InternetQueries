@@ -143,6 +143,7 @@ class IndexWriter:
             path = '{}\{}\\'.format(directory,self.blocks)
             if not os.path.exists(path):
                 os.makedirs(path)
+                self.createFolders(path)
 
 
             for f, b in zip(folders[1::2], folders[2::2]):
@@ -182,20 +183,36 @@ class IndexWriter:
                 # i+=1
 
 
+                if len(sub1[0]) <= 0 and len(sub2[0]) > 0:
+                    if len(str) == 0:
+                        str += "{}-{}".format(sub2[0], sub2[1])
+                    else:
+                        str += "|{}-{}".format(sub2[0], sub2[1])
+                    i += 1
 
-                if  (len(sub2[0]) <= 0 and len(sub1[0]) > 0 ) or sub1[0] < sub2[0] :
-                    if len(str)==0:
+                elif  len(sub2[0]) <= 0 and len(sub1[0]) > 0 :
+                    if len(str) == 0:
                         str+="{}-{}".format( sub1[0],sub1[1])
                     else:
                         str += "|{}-{}".format(sub1[0], sub1[1])
-
                     i+=1
-                elif (len(sub1[0]) <= 0 and len(sub2[0]) > 0) or sub1[0] > sub2[0]:
+
+                elif  sub1[0] < sub2[0]:
+                    if len(str) == 0:
+                        str+="{}-{}".format( sub1[0],sub1[1])
+                    else:
+                        str += "|{}-{}".format(sub1[0], sub1[1])
+                    i+=1
+
+                elif   sub1[0] > sub2[0]:
                     if len(str) == 0:
                         str+="{}-{}".format( sub2[0],sub2[1])
                     else:
                         str+="|{}-{}".format( sub2[0],sub2[1])
                     j+=1
+                elif len(sub2[0]) <= 0 and len(sub1[0]) <= 0:
+                    i += 1
+                    j += 1
                 else:
                     if len(str) == 0:
                         str += "{}-{}_{}".format(sub1[0], sub1[1],sub2[1])
@@ -250,6 +267,7 @@ class IndexWriter:
             while word[0][0] != ch:
                 if not os.path.exists(directory):
                     os.makedirs(directory)
+
                 if len(s) > 0:
                     # charfile = open("{}\{}.bin".format(directory,ch), "wb")
                     # self.compress(s, directory, ch)
@@ -264,7 +282,7 @@ class IndexWriter:
                 ch = chr(ord(ch) + 1)
                 if ch > '9' and ch < 'a' :
                     ch = 'a'
-                self.writeFiles("", directory, ch)
+                # self.writeFiles("", directory, ch)
 
 
 
@@ -282,6 +300,7 @@ class IndexWriter:
         # charfile.write(sb)
         # charfile.close()
         # self.compress(s, directory, ch)
+        self.writeFiles("", directory, ch)
         self.writeFiles(s, directory, ch)
         print("done write  in {} time".format(asctime()))
         print( datetime.datetime.now()- self.startTime)
@@ -340,16 +359,16 @@ class IndexWriter:
         directory = "{}\\temp".format(dir)
         if not os.path.exists(directory):
             os.makedirs(directory)
-        for i in range(self.b):
-            ch = '0'
-            directory = "{}\\temp\{}".format(dir,i)
-            if not os.path.exists(directory):
-                os.makedirs(directory)
-            while ch <= 'z':
-                open("{}\{}.bin".format(directory, ch), "w")
-                ch = chr(ord(ch) + 1)
-                if ch > '9' and ch < 'a':
-                    ch = 'a'
+        # for i in range(self.b):
+        ch = '0'
+        # if not os.path.exists(directory):
+        #     os.makedirs(directory)
+        #     self.createFolders(dir,i)
+        while ch <= 'z':
+            open("{}\{}.txt".format(directory, ch), "w")
+            ch = chr(ord(ch) + 1)
+            if ch > '9' and ch < 'a':
+                ch = 'a'
         # print("done create Folders  in {} time".format(asctime()))
         return
 
@@ -373,7 +392,7 @@ if __name__ =="__main__":
     time1 = datetime.datetime.now()
 
     dir = os.getcwd()
-    file = os.getcwd()+"/text file/100.txt"
+    file = os.getcwd()+"/text file/1000.txt"
     print(asctime())
     IW = IndexWriter(file,dir)
     # IW = IndexWriter.removeIndex(dir)
