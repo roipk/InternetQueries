@@ -18,7 +18,7 @@ class IndexWriter:
     f_tuple = []
     # temp_indexer= []
     # maxread = 100000000
-    maxread = 9000000
+    maxread = 500000000
     # maxread = 6000
     blocks = 0
     b = 40
@@ -29,6 +29,8 @@ class IndexWriter:
     lock = threading.Lock()
     debug = False
     numBlock = 0
+
+
     def __init__(self, inputFile, dir):
         """Given a collection of documents,
         creates an on disk index inputFile is the path to the file
@@ -87,6 +89,8 @@ class IndexWriter:
         # print("done Comprass folder in {} time".format(asctime()))
         # print(datetime.datetime.now() - self.startTime)
         # self.startTime = datetime.datetime.now()
+
+
     #
     # def readFilesFromFolder(self, inputFile):
     #     readfile = open(inputFile, "r")
@@ -268,6 +272,7 @@ class IndexWriter:
             #     newfile1 = zlib.decompress(file1).decode('utf-8')
         # print(newfile1)
 
+
     def createTempFolder(self, inputFile):
         count = 0
         numthread = 0
@@ -331,7 +336,6 @@ class IndexWriter:
         return
 
 
-
     def sortFile(self):
         while True:
             for i in range(len(self.threads)):
@@ -371,6 +375,7 @@ class IndexWriter:
 
         # print(index)
 
+
     # def MargeFile(self,dir):
     #     directory = "{}\{}".format(dir, 'temp')
     #     countFiles = list(os.walk(directory))[0][1]
@@ -383,6 +388,7 @@ class IndexWriter:
     #     dst = "{}\{}\{}.bin".format(dir, 'temp1', 0)
     #     self.mergeandsort(directory0,directory1,dst)
 
+
     def mergeFolders(self,dir):
 
         directory = "{}\{}".format(dir, 'temp')
@@ -392,23 +398,24 @@ class IndexWriter:
 
 
             while  countfolders > 1:
-                # for f, b in zip(folders[1::2], folders[2::2]):
-                j = 1
-                while j+1 <= countfolders:
+                for f, b in zip(folders[1::2], folders[2::2]):
+                # j = 1
+                # while j+1 <= countfolders:
                     # self.MergeFileWithThread(directory,folders[i],folders[i+1])
                     if self.debug:
                         print(folders[self.numBlock+1])
                         print(folders[self.numBlock+2])
-                    newfolder = (self.numBlock,self.numBlock+1)
-                    newfolder = self.getCorrectFolder(folders,newfolder)
+
+                    # newfolder = self.getCorrectFolder(folders,(self.numBlock,self.numBlock+1))
                     # self.chooseFolders(directory, folders[newfolder[0]], folders[newfolder[1]])
-                    self.MergeFileWithThread(directory, folders[newfolder[0]], folders[newfolder[1]])
+                    # self.MergeFileWithThread(directory, folders[newfolder[0]], folders[newfolder[1]])
+                    self.MergeFileWithThread(directory, f, b)
                     # self.lock.acquire()
                     # try:
-                    self.numBlock += 2
+                    # self.numBlock += 2
                     # finally:
                     #     self.lock.release()
-                    j += 2
+                    # j += 2
 
 
                     # self.chooseFolders(directory,folders[i],folders[i+1])
@@ -416,6 +423,8 @@ class IndexWriter:
                 for k in self.threads:
                     if k.isAlive():
                         k.join()
+
+
                 # for i in self.threadsWrite:
                 #     if i.isAlive():
                 #         i.join()
@@ -430,6 +439,8 @@ class IndexWriter:
                 countfolders = len(folders[0][1])
 
         return
+
+
     def getCorrectFolder(self,folders,low):
         sortlist = folders[0][1]
         min = (0,0)
@@ -444,6 +455,7 @@ class IndexWriter:
             print(min)
         return min
 
+
     # def chooseFolders(self,directory, f, b):
     #
     #     while True:
@@ -452,7 +464,6 @@ class IndexWriter:
     #                 self.threads[i] = threading.Thread(target=self.MergeFileWithThread, args=(directory, f, b))
     #                 self.threads[i].start()
     #                 return
-
 
 
     def MergeFileWithThread(self,directory,f,b):
@@ -477,6 +488,8 @@ class IndexWriter:
             for k in self.threadsWrite:
                 if k.isAlive():
                     k.join()
+                    # sleep(1000000)
+
 
             if self.debug:
                 print(f[0])
@@ -488,15 +501,28 @@ class IndexWriter:
             print("done merge  in {} time".format(asctime()))
             print(datetime.datetime.now() - self.startTime)
         # self.startTime = datetime.datetime.now()
+        for k in self.threads:
+            if k.isAlive():
+                k.join()
+                sleep(1000000)
+        for m in self.threadsWrite:
+            if m.isAlive():
+                m.join()
+                sleep(1000000)
         return
 
+
     def writeCharsFile(self,folder1, folder2, newpath):
-        while True:
-            for i in range(len(self.threadsWrite)):
-                if not self.threadsWrite[i].is_alive():
-                    self.threadsWrite[i] = threading.Thread(target=self.mergeandsort, args=(folder1, folder2, newpath))
-                    self.threadsWrite[i].start()
-                    return
+        t = threading.Thread(target=self.mergeandsort, args=(folder1, folder2, newpath))
+        t.start()
+        t.join()
+        return
+        # while True:
+        #     for i in range(len(self.threadsWrite)):
+        #         if not self.threadsWrite[i].is_alive():
+        #             self.threadsWrite[i] = threading.Thread(target=self.mergeandsort, args=(folder1, folder2, newpath))
+        #             self.threadsWrite[i].start()
+        #             return
 
 
     def delfolder(self,path):
@@ -637,7 +663,6 @@ class IndexWriter:
         return
 
 
-
     def writeToFile(self , dir , index,blocks):
         index.sort(key=operator.itemgetter(0))  # Sort the lists by AB
         # print("done sort  in {} time".format(asctime()))
@@ -769,12 +794,12 @@ class IndexWriter:
         charfile.close()
         # print('done write {}'.format(ch))
 
+
     # def writeFiles(self, s, directory, ch):
     #     charfile = open("{}\{}.bin".format(directory, ch), "wb")
     #     sb = zlib.compress(s.encode('utf-8'))
     #     charfile.write(sb)
     #     charfile.close()
-
 
 
     def findDoc(self,directory,word):
@@ -803,6 +828,7 @@ class IndexWriter:
 
         # print(docs)
 
+
     def createComprassFolder(self, dir):
         if not os.path.exists(dir):
             os.makedirs(dir)
@@ -815,6 +841,7 @@ class IndexWriter:
                 ch = 'a'
         # print("done create Folders  in {} time".format(asctime()))
         return
+
 
     def createFolders(self,dir):
         self.lock.acquire()
@@ -843,6 +870,7 @@ class IndexWriter:
         """Delete all index files by removing
         the given directory dir is the name of the directory in which all index files are located.
         After removing the files, the directory should be deleted."""
+
 
     def worker(self):
         """thread worker function"""
