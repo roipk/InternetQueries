@@ -17,17 +17,17 @@ class IndexWriter:
     indexer = []
     f_tuple = []
     # temp_indexer= []
-    # maxread = 100000000
-    maxread = 500000000
-    # maxread = 6000
-    blocks = 0
+    maxread = 10000000000
+
+    blocks = chr(ord('A'))
     b = 40
     startTime=""
     threads = []
     threadsWrite = []
     dir =""
     lock = threading.Lock()
-    debug = False
+    debug = True
+    # debug = False
     numBlock = 0
 
 
@@ -43,7 +43,7 @@ class IndexWriter:
         frequency = 1
         self.f_tuple=[]
         # self.temp_indexer = []
-        self.blocks = -1
+        self.blocks =  chr(ord('A') - 1)
         self.threads = []
         self.dir = dir
         self.lock = threading.Lock()
@@ -62,9 +62,10 @@ class IndexWriter:
         self.startTime = datetime.datetime.now()
         self.createTempFolder(inputFile)
 
+
         print("done create folders in {} time".format(asctime()))
         print(datetime.datetime.now() - self.startTime)
-        self.startTime = datetime.datetime.now()
+        # self.startTime = datetime.datetime.now()
 
 
         self.mergeFolders(dir)
@@ -276,55 +277,73 @@ class IndexWriter:
     def createTempFolder(self, inputFile):
         count = 0
         numthread = 0
-        readfile = open(inputFile, "r")
+        with open(inputFile,buffering=4000000) as f:
+            for line in f:
+                s = []
+                if line[0] != '*' and line[0] != '\n':
+                    count+=1
+                    v = ''
+                    for i in range(len(line)):
+                        ch = line[i]
+                        if 'A' <= ch <= 'Z':
+                            v += '{}'.format(chr(ord(ch) + 32))
+                        elif 'a' <= ch <= 'z' or '0' <= ch <= '9':
+                            v += '{}'.format(ch)
 
-        line = readfile.readline()
-
-        # s = readfile.read(self.maxread)
-        if self.debug:
-            print("done read  in {} time".format(asctime()))
-            print(datetime.datetime.now() - self.startTime)
-        # def test(self,s,readfile,count):
-        while line:
-            if line[0] != '*' and line[0] != '\n':
-                count+=1
-                line = re.sub(r"[^a-zA-Z0-9]+", ' ', line)
-                line = line.lower()
-                words = line.split()
-                words.sort()
-                # print(datetime.datetime.now() - self.startTime)
-                firstWord = ""
-                frequency = 1
-
-                for word in words :
-                    if firstWord == "":
-                        firstWord = word
-                    elif  firstWord != word:
-                        self.indexer.append((firstWord, count, frequency))
-                        firstWord = word
-                        # print(firstWord, count, frequency)
+                        elif len(v) > 0:
+                            s.append(v)
+                            v = ''
+                        else:
+                            v = ''
+                    if len(v) > 0:
+                        s.append(v)
+                        # s.sort()
+                        firstWord = ""
                         frequency = 1
-                    else:
-                        frequency += 1
+                        v=''
 
-                if frequency > 1:
-                    self.indexer.append((firstWord, count, frequency))
-                elif firstWord!='':
-                    self.indexer.append((firstWord, count, 1))
+                    firstWord = ""
+                    frequency = 1
+                    s.sort()
 
-                if sys.getsizeof(self.indexer) > self.maxread:
-                    self.sortFile()
-                    if self.debug:
-                        print("continue")
+                    for word in s:
+                        if firstWord == "":
+                            firstWord = word
+                        elif firstWord != word:
+                            self.indexer.append((firstWord, count, frequency))
+                            firstWord = word
+                            # print(firstWord, count, frequency)
+                            frequency = 1
+                        else:
+                            frequency += 1
 
-                if count % 10000 == 0 and self.debug:
-                    print("done {} in {} time".format(count,asctime()))
+                    if frequency > 1:
+                        self.indexer.append((firstWord, count, frequency))
+                    elif firstWord != '':
+                        self.indexer.append((firstWord, count, 1))
 
-            line = readfile.readline()
+
+                    if len(self.indexer) > 0 and (sys.getsizeof(self.indexer) * sys.getsizeof(self.indexer[0])) > self.maxread:
+                        indexer = self.indexer
+                        self.indexer=[]
+                        self.sortFile(indexer)
+                        directory = "{}\{}".format(dir, 'temp')
+                        if os.path.exists(directory):
+                            folders = list(os.walk(directory))
+                        if self.debug:
+                            print("continue")
+
+                    if count % 100000 == 0 and self.debug:
+                        print("done {} in {} time".format(count,asctime()))
+
         if self.debug:
             print(count)
+            # print(datetime.datetime.now() - self.startTime)
+            print("done create dictionary after {} time ".format(datetime.datetime.now() - self.startTime))
         if len(self.indexer) > 0:
-            self.sortFile()
+            indexer = self.indexer
+            self.indexer = []
+            self.sortFile(indexer)
             if self.debug:
                 print("continue")
 
@@ -332,11 +351,11 @@ class IndexWriter:
             if i.is_alive():
                 i.join()
             if self.debug:
-                print("done")
+                print("done",i)
         return
 
 
-    def sortFile(self):
+    def sortFile(self,indexer):
         while True:
             for i in range(len(self.threads)):
                 # print(i)
@@ -348,11 +367,10 @@ class IndexWriter:
                     if self.debug:
                         print("i = {}".format(i))
                     # stime = datetime.datetime.now()
-                    self.threads[numthread] = threading.Thread(target=self.writeToFileWrapper, args=(self.indexer,))
+                    self.threads[numthread] = threading.Thread(target=self.writeToFileWrapper, args=(indexer,))
                     self.threads[numthread].start()
                     if self.debug:
                         print("doneThread")
-                    self.indexer = []
                     # print(datetime.datetime.now()-stime)
                     # print("numthread = {}".format(numthread) )
                     # print( self.indexer)
@@ -365,7 +383,13 @@ class IndexWriter:
         # self.indexer = []
         self.lock.acquire()
         try:
-            self.blocks += 1
+            # chr(ord(self.blocks) + 1)
+            if self.blocks[-1] < 'Z' and len(self.blocks) ==  1:
+                self.blocks = chr(ord(self.blocks ) + 1)
+            elif self.blocks[-1] < 'Z':
+                self.blocks = '{}{}'.format(self.blocks[:-1],chr(ord(self.blocks[-1]) + 1))
+            else:
+                self.blocks = '{}A'.format(self.blocks)
         finally:
             self.lock.release()
         self.writeToFile(self.dir, index, self.blocks)
@@ -390,21 +414,20 @@ class IndexWriter:
 
 
     def mergeFolders(self,dir):
-
         directory = "{}\{}".format(dir, 'temp')
         if os.path.exists(directory):
             folders = list(os.walk(directory))
             countfolders = len(folders[0][1])
 
-
             while  countfolders > 1:
+
                 for f, b in zip(folders[1::2], folders[2::2]):
-                # j = 1
-                # while j+1 <= countfolders:
+                    # j = 1
+                    # while j+1 <= countfolders:
                     # self.MergeFileWithThread(directory,folders[i],folders[i+1])
-                    if self.debug:
-                        print(folders[self.numBlock+1])
-                        print(folders[self.numBlock+2])
+                    # if self.debug:
+                    #     print(folders[self.numBlock+1])
+                    #     print(folders[self.numBlock+2])
 
                     # newfolder = self.getCorrectFolder(folders,(self.numBlock,self.numBlock+1))
                     # self.chooseFolders(directory, folders[newfolder[0]], folders[newfolder[1]])
@@ -431,12 +454,22 @@ class IndexWriter:
                 if self.debug:
                     print("done loop merge  in {} time".format(asctime()))
                     print(datetime.datetime.now() - self.startTime)
+                os.chdir(directory)
+                if countfolders > 1 and countfolders % 2 == 1:
+                    if self.blocks[-1] < 'Z' and len(self.blocks) == 1:
+                        self.blocks = chr(ord(self.blocks) + 1)
+                    elif self.blocks[-1] < 'Z':
+                        self.blocks = '{}{}'.format(self.blocks[:-1], chr(ord(self.blocks[-1]) + 1))
+                    else:
+                        self.blocks = '{}A'.format(self.blocks)
+                    os.rename(folders[0][1][-1], self.blocks)
+                os.chdir(dir)
                 # self.startTime = datetime.datetime.now()
-
                 folders = list(os.walk(directory))
-                if self.debug:
-                    print(folders)
+                # if self.debug:
+                #     print(folders)
                 countfolders = len(folders[0][1])
+
 
         return
 
@@ -450,9 +483,9 @@ class IndexWriter:
             elif int(sortlist[i]) == low[1]:
                 min = (min[0], i + 1)
         # if self.debug:
-            print(sortlist)
-            print(low[0],low[1])
-            print(min)
+        #     print(sortlist)
+        #     print(low[0],low[1])
+        #     print(min)
         return min
 
 
@@ -467,16 +500,21 @@ class IndexWriter:
 
 
     def MergeFileWithThread(self,directory,f,b):
-        self.blocks += 1
-        path = '{}\{}\\'.format(directory, self.blocks)
-        if not os.path.exists(path):
-            os.makedirs(path)
-            self.createFolders(path)
         if f and b:
+            if self.blocks[-1] < 'Z' and len(self.blocks) == 1:
+                self.blocks = chr(ord(self.blocks) + 1)
+            elif self.blocks[-1] < 'Z':
+                self.blocks = '{}{}'.format(self.blocks[:-1], chr(ord(self.blocks[-1]) + 1))
+            else:
+                self.blocks = '{}A'.format(self.blocks)
+            path = '{}\{}\\'.format(directory, self.blocks)
+            if not os.path.exists(path):
+                os.makedirs(path)
+                self.createFolders(path)
             for i in range(len(f[2])):
-                if self.debug:
-                    print('i = {}\nf[2] = {}'.format(i,f[0]))
-                    print('i = {}\nb[2] = {}'.format(i, b[0]))
+                # if self.debug:
+                #     print('i = {}\nf[2] = {}'.format(i,f[0]))
+                #     print('i = {}\nb[2] = {}'.format(i, b[0]))
                 newpath = '{}{}'.format(path, f[2][i])
                 folder1 = '{}\{}'.format(f[0], f[2][i])
                 folder2 = '{}\{}'.format(b[0], b[2][i])
@@ -491,9 +529,9 @@ class IndexWriter:
                     # sleep(1000000)
 
 
-            if self.debug:
-                print(f[0])
-                print(b[0])
+            # if self.debug:
+            #     print(f[0])
+            #     print(b[0])
             self.delfolder(f[0])
             self.delfolder(b[0])
 
@@ -504,11 +542,10 @@ class IndexWriter:
         for k in self.threads:
             if k.isAlive():
                 k.join()
-                sleep(1000000)
         for m in self.threadsWrite:
             if m.isAlive():
                 m.join()
-                sleep(1000000)
+
         return
 
 
@@ -884,7 +921,7 @@ if __name__ =="__main__":
     time1 = datetime.datetime.now()
 
     dir = os.getcwd()
-    file = os.getcwd()+"\\text file\\100000.txt"
+    file = os.getcwd()+"\\text file\\1000000.txt"
     print(asctime())
     IW = IndexWriter(file,dir)
     # IW = IndexWriter.removeIndex(dir)
