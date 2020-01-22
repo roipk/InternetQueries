@@ -29,6 +29,7 @@ class IndexWriter:
     debug = True
     # debug = False
     numBlock = 0
+    stopwords={}
 
 
     def __init__(self, inputFile, dir):
@@ -48,7 +49,7 @@ class IndexWriter:
         self.dir = dir
         self.lock = threading.Lock()
         self.numBlock = 0
-
+        self.stopwords={'ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there', 'about', 'once', 'during', 'out', 'very', 'having', 'with', 'they', 'own', 'an', 'be', 'some', 'for', 'do', 'its', 'yours', 'such', 'into', 'of', 'most', 'itself', 'other', 'off', 'is', 's', 'am', 'or', 'who', 'as', 'from', 'him', 'each', 'the', 'themselves', 'until', 'below', 'are', 'we', 'these', 'your', 'his', 'through', 'don', 'nor', 'me', 'were', 'her', 'more', 'himself', 'this', 'down', 'should', 'our', 'their', 'while', 'above', 'both', 'up', 'to', 'ours', 'had', 'she', 'all', 'no', 'when', 'at', 'any', 'before', 'them', 'same', 'and', 'been', 'have', 'in', 'will', 'on', 'does', 'yourselves', 'then', 'that', 'because', 'what', 'over', 'why', 'so', 'can', 'did', 'not', 'now', 'under', 'he', 'you', 'herself', 'has', 'just', 'where', 'too', 'only', 'myself','which', 'those', 'i', 'after', 'few', 'whom', 't', 'being', 'if', 'theirs', 'my', 'against', 'a', 'by', 'doing', 'it', 'how', 'further', 'was', 'here', 'than'}
 
 
         for i in range(8):
@@ -77,174 +78,6 @@ class IndexWriter:
         if self.debug:
             print(path[1][0])
         os.rename(path[1][0], "File Compressed")
-        # path = dir+'\\temp\\0\\a.bin'
-        # self.readfiles(path)
-
-        # print(path)
-
-
-
-        # comressDir = '{}\compressFile'.format(dir)
-        # self.createComprassFolder(comressDir)
-        # self.compressFolder(folder,comressDir,dir)
-        # print("done Comprass folder in {} time".format(asctime()))
-        # print(datetime.datetime.now() - self.startTime)
-        # self.startTime = datetime.datetime.now()
-
-
-    #
-    # def readFilesFromFolder(self, inputFile):
-    #     readfile = open(inputFile, "r")
-    #     tempLine = ''
-    #     countlines = 0
-    #     line = readfile.read(self.maxread)
-    #     # line = readfile.readline()
-    #     # while line:
-    #     #     if line[0]!='*' and line[0]!='\n':
-    #     #         countlines+=1
-    #     #     line = readfile.readline()
-    #     # print(countlines)
-    #     # return
-    #     while line:
-    #         newLines = []
-    #         line = '{}{}'.format(tempLine,line)
-    #         if line[-1] == '\n':
-    #             # print("in1")
-    #             lines = line.split('\n')
-    #             for i in range(len(lines) - 1):
-    #                 # print(one)
-    #                 if len(lines[i]) > 0 and lines[i][0] != '*':
-    #                     newLines.append(lines[i])
-    #             countlines+=len(newLines)
-    #             tempLine = lines[-1]
-    #
-    #         elif line[-1]=='*':
-    #             # print("in2")
-    #             lines = line.split('\n')
-    #             for i in range(len(lines) - 1):
-    #                 if len(lines[i]) > 0 and lines[i][0] != '*':
-    #                     newLines.append(lines[i])
-    #             countlines += len(newLines)
-    #             tempLine=''
-    #         else:
-    #             # print("in3")
-    #             # print(line[-1])
-    #             lines = line.split('\n')
-    #             # print(lines)
-    #             for i in range(len(lines)-1):
-    #                 # print(one)
-    #                 if len(lines[i]) > 0 and lines[i][0] != '*':
-    #                     newLines.append(lines[i])
-    #             countlines += len(newLines)
-    #             tempLine = lines[-1]
-    #         # print(newLines)
-    #
-    #         while True:
-    #             # print("wait1")
-    #             for i in range(len(self.threads)):
-    #                 # print(i)
-    #                 if not self.threads[i].isAlive():
-    #                     print("i = {}".format(i))
-    #                     numthread = i
-    #                     # index = self.indexer
-    #                     # print(self.indexer)
-    #                     print("i = {}".format(i))
-    #                     start = countlines - len(newLines)
-    #                     self.threads[numthread] = threading.Thread(target=self.testfoo, args=(newLines,start))
-    #                     self.threads[numthread].start()
-    #                     self.indexer = []
-    #                     # print( self.indexer)
-    #                     break
-    #             if numthread > -1:
-    #                 break
-    #
-    #         self.lock.acquire()
-    #         try:
-    #             line = readfile.read(self.maxread - len(tempLine))
-    #         finally:
-    #             self.lock.release()
-    #
-    #     if len(tempLine) > 0:
-    #         # print(tempLine)
-    #         newLines.append(tempLine)
-    #         countlines+=1
-    #         while True:
-    #             # print("wait1")
-    #             for i in range(len(self.threads)):
-    #                 # print(i)
-    #                 if not self.threads[i].isAlive():
-    #                     print("i = {}".format(i))
-    #                     numthread = i
-    #                     # index = self.indexer
-    #                     # print(self.indexer)
-    #                     print("i = {}".format(i))
-    #                     start = countlines - len(newLines)
-    #                     self.threads[numthread] = threading.Thread(target=self.testfoo, args=(newLines,start))
-    #                     self.threads[numthread].start()
-    #                     self.indexer = []
-    #                     # print( self.indexer)
-    #                     break
-    #             if numthread > -1:
-    #                 break
-    #
-    #     # print(countlines)
-    #
-    #
-    # def testfoo(self,lines,start):
-    #     countline = start
-    #     indexer=[]
-    #     # print(lines)
-    #     for line in lines:
-    #         line = re.sub(r"[^a-zA-Z0-9]+", ' ', line)
-    #         line = line.lower()
-    #         words = line.split()
-    #         words.sort()
-    #         firstWord = ""
-    #         frequency = 1
-    #
-    #         for word in words:
-    #             if firstWord == "":
-    #                 firstWord = word
-    #             elif firstWord != word:
-    #                 indexer.append((firstWord, countline, frequency))
-    #                 firstWord = word
-    #                 # print(firstWord, count, frequency)
-    #                 frequency = 1
-    #             else:
-    #                 frequency += 1
-    #
-    #         if frequency > 1:
-    #             indexer.append((firstWord, countline, frequency))
-    #         elif firstWord != '':
-    #             indexer.append((firstWord, countline, 1))
-    #
-    #         if sys.getsizeof(indexer) > self.maxread:
-    #             # if len(self.threads)
-    #             # print(numthread)
-    #             numthread = -1
-    #
-    #             while True:
-    #                 # print("wait1")
-    #                 for i in range(len(self.threadsWrite)):
-    #                     # print(i)
-    #                     if not self.threadsWrite[i].isAlive():
-    #                         print("i = {}".format(i))
-    #                         numthread = i
-    #                         # index = self.indexer
-    #                         # print(self.indexer)
-    #                         print("i = {}".format(i))
-    #                         self.threadsWrite[numthread] = threading.Thread(target=self.writeToFileWrapper, args=(indexer,))
-    #                         self.threadsWrite[numthread].start()
-    #                         indexer = []
-    #                         # print( self.indexer)
-    #                         break
-    #                 if numthread > -1:
-    #                     break
-    #
-    #         countline+=1
-    #         # print(words)
-    #     # print(start)
-    #     # print(lines)
 
 
     def readfiles(self,path):
@@ -291,11 +124,13 @@ class IndexWriter:
                             v += '{}'.format(ch)
 
                         elif len(v) > 0:
-                            s.append(v)
+                            if v not in self.stopWords:
+                                s.append(v)
                             v = ''
                         else:
                             v = ''
                     if len(v) > 0:
+
                         s.append(v)
                         # s.sort()
                         firstWord = ""
@@ -397,21 +232,6 @@ class IndexWriter:
             print("end")
         return
 
-        # print(index)
-
-
-    # def MargeFile(self,dir):
-    #     directory = "{}\{}".format(dir, 'temp')
-    #     countFiles = list(os.walk(directory))[0][1]
-    #     # print(len(countFiles))
-    #     # if (len(countFiles) % 2 > 0):
-    #     #     print((countFiles))
-    #
-    #     directory0 = "{}\{}\{}\{}.bin".format(dir, 'temp', 0, 0)
-    #     directory1 = "{}\{}\{}\{}.bin".format(dir, 'temp', 1, 0)
-    #     dst = "{}\{}\{}.bin".format(dir, 'temp1', 0)
-    #     self.mergeandsort(directory0,directory1,dst)
-
 
     def mergeFolders(self,dir):
         directory = "{}\{}".format(dir, 'temp')
@@ -422,26 +242,8 @@ class IndexWriter:
             while  countfolders > 1:
 
                 for f, b in zip(folders[1::2], folders[2::2]):
-                    # j = 1
-                    # while j+1 <= countfolders:
-                    # self.MergeFileWithThread(directory,folders[i],folders[i+1])
-                    # if self.debug:
-                    #     print(folders[self.numBlock+1])
-                    #     print(folders[self.numBlock+2])
-
-                    # newfolder = self.getCorrectFolder(folders,(self.numBlock,self.numBlock+1))
-                    # self.chooseFolders(directory, folders[newfolder[0]], folders[newfolder[1]])
-                    # self.MergeFileWithThread(directory, folders[newfolder[0]], folders[newfolder[1]])
-                    self.MergeFileWithThread(directory, f, b)
-                    # self.lock.acquire()
-                    # try:
-                    # self.numBlock += 2
-                    # finally:
-                    #     self.lock.release()
-                    # j += 2
-
-
-                    # self.chooseFolders(directory,folders[i],folders[i+1])
+                    if f and b:
+                        self.MergeFileWithThread(directory, f, b)
 
                 for k in self.threads:
                     if k.isAlive():
@@ -489,51 +291,33 @@ class IndexWriter:
         return min
 
 
-    # def chooseFolders(self,directory, f, b):
-    #
-    #     while True:
-    #         for i in range(len(self.threads)):
-    #             if not self.threads[i].is_alive():
-    #                 self.threads[i] = threading.Thread(target=self.MergeFileWithThread, args=(directory, f, b))
-    #                 self.threads[i].start()
-    #                 return
-
 
     def MergeFileWithThread(self,directory,f,b):
-        if f and b:
-            if self.blocks[-1] < 'Z' and len(self.blocks) == 1:
-                self.blocks = chr(ord(self.blocks) + 1)
-            elif self.blocks[-1] < 'Z':
-                self.blocks = '{}{}'.format(self.blocks[:-1], chr(ord(self.blocks[-1]) + 1))
-            else:
-                self.blocks = '{}A'.format(self.blocks)
-            path = '{}\{}\\'.format(directory, self.blocks)
-            if not os.path.exists(path):
-                os.makedirs(path)
-                self.createFolders(path)
-            for i in range(len(f[2])):
-                # if self.debug:
-                #     print('i = {}\nf[2] = {}'.format(i,f[0]))
-                #     print('i = {}\nb[2] = {}'.format(i, b[0]))
-                newpath = '{}{}'.format(path, f[2][i])
-                folder1 = '{}\{}'.format(f[0], f[2][i])
-                folder2 = '{}\{}'.format(b[0], b[2][i])
-                self.lock.acquire()
-                try:
-                    self.writeCharsFile(folder1, folder2, newpath)
-                finally:
-                    self.lock.release()
-            for k in self.threadsWrite:
-                if k.isAlive():
-                    k.join()
-                    # sleep(1000000)
+        if self.blocks[-1] < 'Z' and len(self.blocks) == 1:
+            self.blocks = chr(ord(self.blocks) + 1)
+        elif self.blocks[-1] < 'Z':
+            self.blocks = '{}{}'.format(self.blocks[:-1], chr(ord(self.blocks[-1]) + 1))
+        else:
+            self.blocks = '{}A'.format(self.blocks)
+        path = '{}\{}\\'.format(directory, self.blocks)
+        if not os.path.exists(path):
+            os.makedirs(path)
+            self.createFolders(path)
+        for i in range(len(f[2])):
+            newpath = '{}{}'.format(path, f[2][i])
+            folder1 = '{}\{}'.format(f[0], f[2][i])
+            folder2 = '{}\{}'.format(b[0], b[2][i])
+            self.lock.acquire()
+            try:
+                self.writeCharsFile(folder1, folder2, newpath)
+            finally:
+                self.lock.release()
+        for k in self.threadsWrite:
+            if k.isAlive():
+                k.join()
 
-
-            # if self.debug:
-            #     print(f[0])
-            #     print(b[0])
-            self.delfolder(f[0])
-            self.delfolder(b[0])
+        self.delfolder(f[0])
+        self.delfolder(b[0])
 
         if self.debug:
             print("done merge  in {} time".format(asctime()))
@@ -554,12 +338,7 @@ class IndexWriter:
         t.start()
         t.join()
         return
-        # while True:
-        #     for i in range(len(self.threadsWrite)):
-        #         if not self.threadsWrite[i].is_alive():
-        #             self.threadsWrite[i] = threading.Thread(target=self.mergeandsort, args=(folder1, folder2, newpath))
-        #             self.threadsWrite[i].start()
-        #             return
+
 
 
     def delfolder(self,path):
@@ -665,37 +444,9 @@ class IndexWriter:
                             str += "|{}-{}".format(sub2[0], sub2[1])
                     j += 1
 
-
-                # print ("s1 = {}".format(file1))
-                # print ("s2 = {}".format(file2))
-
-
-                # l.sort # Since you seem to want them in reverse order...
-                # c = ''.join(l)
-                # print(str)
-                # print('str = {} '.format(str))
             sb = zlib.compress(str.encode('utf-8'))
 
             d.write(sb)
-                # newfile1 = ""
-                # newfile2 = ""
-                # file1 = s1.read(self.maxread)
-                # tempfile = file1
-                # file1 = s1.read(self.maxread)
-                # while file1:
-                #     tempfile += file1
-                #     file1 = s1.read(self.maxread)
-                # if len(tempfile) > 0:
-                #     newfile1 = zlib.decompress(tempfile).decode('utf-8')
-                #
-                # file2 = s2.read(self.maxread)
-                # tempfile = file2
-                # file2 = s2.read(self.maxread)
-                # while file2:
-                #     tempfile += file2
-                #     file2 = s2.read(self.maxread)
-                # if len(tempfile) > 0:
-                #     newfile2 = zlib.decompress(tempfile).decode('utf-8')
 
         return
 
@@ -737,13 +488,6 @@ class IndexWriter:
                                 break
                         if numthread > -1:
                             break
-
-
-                    # self.compress(s, directory, ch)
-                    # sb = zlib.compress(s.encode('utf-8'))
-                    # charfile.write(sb)
-                    # charfile.close()
-                    # print("done write {} in {} time".format(ch,asctime()))
                 s = ""
                 backword = ""
 
@@ -765,14 +509,6 @@ class IndexWriter:
                 s += ("|{}-{}:{}".format(word[0], word[1],word[2]))
                 backword = word[0]
 
-        # charfile = open("{}\{}.bin".format(directory,ch), "wb")
-        # sb = zlib.compress(s.encode('utf-8'))
-        # charfile.write(sb)
-        # charfile.close()
-        # self.compress(s, directory, ch)
-        # print("ch = {}".format(ch))
-        # self.writeFiles("", directory, ch)
-        # self.compress(s, directory, ch)
         numthread = -1
         while True:
             # print("wait")
@@ -829,14 +565,7 @@ class IndexWriter:
         sb = zlib.compress(s.encode('utf-8'))
         charfile.write(sb)
         charfile.close()
-        # print('done write {}'.format(ch))
 
-
-    # def writeFiles(self, s, directory, ch):
-    #     charfile = open("{}\{}.bin".format(directory, ch), "wb")
-    #     sb = zlib.compress(s.encode('utf-8'))
-    #     charfile.write(sb)
-    #     charfile.close()
 
 
     def findDoc(self,directory,word):
@@ -847,12 +576,6 @@ class IndexWriter:
 
 
         wordArray = s.split("|")
-        # print(wordArray)
-        # wordArray[2]
-        # numdoc =   wordArray[2].split("-")
-        # print(numdoc)
-        # doc = numdoc[1].split(":")
-        # print(doc[0])
         docs=[]
         for i in wordArray:
             numdoc = i.split("-")
