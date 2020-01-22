@@ -6,8 +6,9 @@ import zlib
 import shutil
 import datetime
 import glob
+import bisect
 
-from time import gmtime, asctime, time, sleep
+from time import gmtime, asctime, time
 import threading
 
 
@@ -17,7 +18,7 @@ class IndexWriter:
     indexer = []
     f_tuple = []
     # temp_indexer= []
-    maxread = 10000000000
+    maxread = 100000000000
 
     blocks = chr(ord('A'))
     b = 40
@@ -49,7 +50,7 @@ class IndexWriter:
         self.dir = dir
         self.lock = threading.Lock()
         self.numBlock = 0
-        self.stopwords={'ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there', 'about', 'once', 'during', 'out', 'very', 'having', 'with', 'they', 'own', 'an', 'be', 'some', 'for', 'do', 'its', 'yours', 'such', 'into', 'of', 'most', 'itself', 'other', 'off', 'is', 's', 'am', 'or', 'who', 'as', 'from', 'him', 'each', 'the', 'themselves', 'until', 'below', 'are', 'we', 'these', 'your', 'his', 'through', 'don', 'nor', 'me', 'were', 'her', 'more', 'himself', 'this', 'down', 'should', 'our', 'their', 'while', 'above', 'both', 'up', 'to', 'ours', 'had', 'she', 'all', 'no', 'when', 'at', 'any', 'before', 'them', 'same', 'and', 'been', 'have', 'in', 'will', 'on', 'does', 'yourselves', 'then', 'that', 'because', 'what', 'over', 'why', 'so', 'can', 'did', 'not', 'now', 'under', 'he', 'you', 'herself', 'has', 'just', 'where', 'too', 'only', 'myself','which', 'those', 'i', 'after', 'few', 'whom', 't', 'being', 'if', 'theirs', 'my', 'against', 'a', 'by', 'doing', 'it', 'how', 'further', 'was', 'here', 'than'}
+        # self.stopwords={'ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there', 'about', 'once', 'during', 'out', 'very', 'having', 'with', 'they', 'own', 'an', 'be', 'some', 'for', 'do', 'its', 'yours', 'such', 'into', 'of', 'most', 'itself', 'other', 'off', 'is', 's', 'am', 'or', 'who', 'as', 'from', 'him', 'each', 'the', 'themselves', 'until', 'below', 'are', 'we', 'these', 'your', 'his', 'through', 'don', 'nor', 'me', 'were', 'her', 'more', 'himself', 'this', 'down', 'should', 'our', 'their', 'while', 'above', 'both', 'up', 'to', 'ours', 'had', 'she', 'all', 'no', 'when', 'at', 'any', 'before', 'them', 'same', 'and', 'been', 'have', 'in', 'will', 'on', 'does', 'yourselves', 'then', 'that', 'because', 'what', 'over', 'why', 'so', 'can', 'did', 'not', 'now', 'under', 'he', 'you', 'herself', 'has', 'just', 'where', 'too', 'only', 'myself','which', 'those', 'i', 'after', 'few', 'whom', 't', 'being', 'if', 'theirs', 'my', 'against', 'a', 'by', 'doing', 'it', 'how', 'further', 'was', 'here', 'than'}
 
 
         for i in range(8):
@@ -123,15 +124,15 @@ class IndexWriter:
                         elif 'a' <= ch <= 'z' or '0' <= ch <= '9':
                             v += '{}'.format(ch)
 
-                        elif len(v) > 0:
-                            if v not in self.stopwords:
-                                s.append(v)
-                                v = ''
+                        elif len(v) > 2:
+                            # if v not in self.stopwords:
+                            s.append(v)
+                            v = ''
                         else:
                             v = ''
                     if len(v) > 0:
-                        if v not in self.stopwords:
-                            s.append(v)
+                        # if v not in self.stopwords:
+                        s.append(v)
                         v=''
 
                     firstWord = ""
@@ -142,6 +143,7 @@ class IndexWriter:
                         if firstWord == "":
                             firstWord = word
                         elif firstWord != word:
+                            # bisect.insort(self.indexer, (firstWord, count, frequency))
                             self.indexer.append((firstWord, count, frequency))
                             firstWord = word
                             # print(firstWord, count, frequency)
@@ -150,8 +152,10 @@ class IndexWriter:
                             frequency += 1
 
                     if frequency > 1:
+                        # bisect.insort(self.indexer, (firstWord, count, frequency))
                         self.indexer.append((firstWord, count, frequency))
                     elif firstWord != '':
+                        # bisect.insort(self.indexer, (firstWord, count, 1))
                         self.indexer.append((firstWord, count, 1))
 
 
@@ -166,7 +170,10 @@ class IndexWriter:
                             print("continue")
 
                     if count % 100000 == 0 and self.debug:
-                        print("done {} in {} time".format(count,asctime()))
+                        print("done {} in {} time".format(count,datetime.datetime.now() - self.startTime))
+
+
+
 
         if self.debug:
             print(count)
@@ -225,8 +232,8 @@ class IndexWriter:
         finally:
             self.lock.release()
         self.writeToFile(self.dir, index, self.blocks)
-        if self.debug:
-            print("end")
+        # if self.debug:
+        #     print("end")
         return
 
 
@@ -449,6 +456,7 @@ class IndexWriter:
 
 
     def writeToFile(self , dir , index,blocks):
+        # print(index)
         index.sort(key=operator.itemgetter(0))  # Sort the lists by AB
         # print("done sort  in {} time".format(asctime()))
 
@@ -641,7 +649,9 @@ if __name__ =="__main__":
     time1 = datetime.datetime.now()
 
     dir = os.getcwd()
-    file = os.getcwd()+"\\text file\\100000.txt"
+    file = os.getcwd()+"\\text file\\1000000.txt" # 100 Mega
+    # file = os.getcwd()+"\\text file\\1000000.txt" # 1 Giga
+    # file = os.getcwd()+"\\text file\\10000000.txt" # 8Giga
     print(asctime())
     IW = IndexWriter(file,dir)
     # IW = IndexWriter.removeIndex(dir)
