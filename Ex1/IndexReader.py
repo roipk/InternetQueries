@@ -1,5 +1,5 @@
 # roimd 203485164
-# gilis 312243561
+# gilili 312243561
 
 import os
 import zlib
@@ -12,7 +12,8 @@ class IndexReader:
         """Creates an IndexReader which will read from the given
         directory dir is the name of the directory in which all
         index files are located."""
-        self.dir = '{}\\temp\\File Compressed'.format(dir)
+        self.dir = '{}\\temp\\File Compressed\\'.format(dir)
+        print(self.dir)
         if not os.path.exists(self.dir):
             self.dir = dir
 
@@ -41,11 +42,11 @@ class IndexReader:
         """Return the number of documents containing a given token (i.e., word)
         Returns 0 if there are no documents containing this token"""
         token = token.lower()
-        directory = '{}\\{}.bin'.format(self.dir,token[0],'Frequency')
-
+        directory = '{}\\{}.bin'.format(self.dir,token[0])
         newfile1 = self.readCompressFile(directory)
         for i in range(len(newfile1)):
             s = newfile1[i].split("-")
+            # print(s)
             if s[0] == token:
                 s = s[1].split('_')
                 return len(s)
@@ -108,9 +109,10 @@ class IndexReader:
 if __name__ =="__main__":
     """part 1.3.1 IndexWriter"""
     dir = os.getcwd()
+    # print(dir)
     IR = IndexReader(dir)
-    # IR.getTokenFrequency("Book")
-    # IR.getTokenCollectionFrequency("Book")
-    # IR.getDocsWithToken("Book")
+    print(IR.getTokenFrequency("Book"))
+    print(IR.getTokenCollectionFrequency("Book"))
+    print(IR.getDocsWithToken("Book"))
     # IR.getNumberOfDocuments("Book")
-    # IR.getNumberOfDocuments()
+    print(IR.getNumberOfDocuments())

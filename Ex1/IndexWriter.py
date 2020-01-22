@@ -124,17 +124,14 @@ class IndexWriter:
                             v += '{}'.format(ch)
 
                         elif len(v) > 0:
-                            if v not in self.stopWords:
+                            if v not in self.stopwords:
                                 s.append(v)
-                            v = ''
+                                v = ''
                         else:
                             v = ''
                     if len(v) > 0:
-
-                        s.append(v)
-                        # s.sort()
-                        firstWord = ""
-                        frequency = 1
+                        if v not in self.stopwords:
+                            s.append(v)
                         v=''
 
                     firstWord = ""
@@ -644,7 +641,7 @@ if __name__ =="__main__":
     time1 = datetime.datetime.now()
 
     dir = os.getcwd()
-    file = os.getcwd()+"\\text file\\1000000.txt"
+    file = os.getcwd()+"\\text file\\100000.txt"
     print(asctime())
     IW = IndexWriter(file,dir)
     # IW = IndexWriter.removeIndex(dir)
