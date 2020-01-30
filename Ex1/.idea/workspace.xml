@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8c6eaea9-ad81-4c52-bd0c-d2062526c083" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IndexReader.py" beforeDir="false" afterPath="$PROJECT_DIR$/IndexReader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IndexSearcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/IndexSearcher.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IndexWriter.py" beforeDir="false" afterPath="$PROJECT_DIR$/IndexWriter.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,7 +35,51 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.IndexWriter">
+  <component name="RunManager" selected="Python.IndexSearcher">
+    <configuration name="IndexReader" type="PythonConfigurationType" factoryName="Python">
+      <module name="Ex1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\conda3_0\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/IndexReader.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="IndexSearcher" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Ex1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\conda3_0\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/IndexSearcher.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="IndexWriter" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Ex1" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -48,6 +94,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/IndexWriter.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="IndexWriter2" type="PythonConfigurationType" factoryName="Python">
+      <module name="Ex1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\conda3_0\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/IndexWriter2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -102,6 +170,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.IndexSearcher" />
         <item itemvalue="Python.IndexWriter" />
         <item itemvalue="Python.t" />
       </list>
@@ -131,6 +200,8 @@
       <updated>1577097105197</updated>
       <workItem from="1577097108023" duration="20348000" />
       <workItem from="1579685709891" duration="1515000" />
+      <workItem from="1579702681048" duration="10376000" />
+      <workItem from="1580365011424" duration="17327000" />
     </task>
     <servers />
   </component>
@@ -146,26 +217,42 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="224" key="#com.intellij.ide.macro.MacrosDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1577097216317" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1577097241322">
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1579704927318">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1577097241322" />
-    <state width="1877" height="216" key="GridCell.Tab.0.bottom" timestamp="1579702310484">
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1579704927318" />
+    <state width="1877" height="216" key="GridCell.Tab.0.bottom" timestamp="1580383451065">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="216" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579702310484" />
-    <state width="1877" height="216" key="GridCell.Tab.0.center" timestamp="1579702310484">
+    <state width="1877" height="216" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1580383451065" />
+    <state width="1877" height="216" key="GridCell.Tab.0.center" timestamp="1580383451065">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="216" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579702310484" />
-    <state width="1877" height="216" key="GridCell.Tab.0.left" timestamp="1579702310484">
+    <state width="1877" height="216" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1580383451065" />
+    <state width="1877" height="216" key="GridCell.Tab.0.left" timestamp="1580383451065">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="216" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579702310484" />
-    <state width="1877" height="216" key="GridCell.Tab.0.right" timestamp="1579702310484">
+    <state width="1877" height="216" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1580383451065" />
+    <state width="1877" height="216" key="GridCell.Tab.0.right" timestamp="1580383451065">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="216" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579702310484" />
+    <state width="1877" height="216" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1580383451065" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1580382347185">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1580382347185" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1580382347185">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1580382347185" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1580382347185">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1580382347185" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1580382347185">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1580382347185" />
     <state x="461" y="162" key="SettingsEditor" timestamp="1577097281258">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -174,9 +261,16 @@
       <screen x="0" y="23" width="1680" height="972" />
     </state>
     <state x="519" y="341" key="com.intellij.ide.util.TipDialog/0.23.1680.972@0.23.1680.972" timestamp="1579685711829" />
+    <state x="591" y="73" width="737" height="894" key="find.popup" timestamp="1579703152765">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="591" y="73" width="737" height="894" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1579703152765" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Ex1$IndexSearcher.coverage" NAME="IndexSearcher Coverage Results" MODIFIED="1580383451061" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Ex1$IndexWriter2.coverage" NAME="IndexWriter2 Coverage Results" MODIFIED="1579708893346" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Ex1$t.coverage" NAME="t Coverage Results" MODIFIED="1577097327177" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Ex1$IndexWriter.coverage" NAME="IndexWriter Coverage Results" MODIFIED="1579702310484" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Ex1$IndexWriter.coverage" NAME="IndexWriter Coverage Results" MODIFIED="1580382518508" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Ex1$IndexReader.coverage" NAME="IndexReader Coverage Results" MODIFIED="1580382640598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -1,6 +1,6 @@
 import os ,os.path
 import operator
-
+import re
 import sys
 import zlib
 import shutil
@@ -18,7 +18,7 @@ class IndexWriter:
     indexer = []
     f_tuple = []
     # temp_indexer= []
-    maxread = 20000000000
+    maxread = 1000000000000
 
     blocks = chr(ord('A'))
     b = 40
@@ -124,7 +124,7 @@ class IndexWriter:
                         elif 'a' <= ch <= 'z' or '0' <= ch <= '9':
                             v += '{}'.format(ch)
 
-                        elif len(v) > 2 or '0'<= v <= '9':
+                        elif len(v) > 2:
                             # if v not in self.stopwords:
                             s.append(v)
                             v = ''
@@ -170,22 +170,28 @@ class IndexWriter:
                             print("continue")
 
                     if count % 100000 == 0 and self.debug:
-                        print("done {} in {} time".format(count,datetime.datetime.now() - self.startTime))
+                        print("done {} in {} time".format(count,asctime()))
 
-
-
-
-        if self.debug:
-            print(count)
-            # print(datetime.datetime.now() - self.startTime)
-            print("done create dictionary after {} time ".format(datetime.datetime.now() - self.startTime))
-        if len(self.indexer) > 0:
-            indexer = self.indexer
-            indexer.append(('0', count, 0))
-            self.indexer = []
-            self.sortFile(indexer)
-            if self.debug:
-                print("continue")
+        self.indexer.sort(key=operator.itemgetter(0))
+        s=''
+        for i in self.indexer:
+            s += '{}'.format(i)
+        print(s)
+        directory = "{}\{}\{}".format(dir, 'temp', 'A')
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        self.compressFile(s,directory,'b')
+        # self.writeToFile(self.dir,self.indexer,'a')
+        # if self.debug:
+        #     print(count)
+        #     print(datetime.datetime.now() - self.startTime)
+        #     print("done create dictionary after {} time ".format(datetime.datetime.now() - self.startTime))
+        # if len(self.indexer) > 0:
+        #     indexer = self.indexer
+        #     self.indexer = []
+        #     self.sortFile(indexer)
+        #     if self.debug:
+        #         print("continue")
 
         for i in self.threads:
             if i.is_alive():
@@ -650,11 +656,7 @@ if __name__ =="__main__":
     time1 = datetime.datetime.now()
 
     dir = os.getcwd()
-    file = os.getcwd()+"\\text file\\100.txt" # 100 kilo
-    # file = os.getcwd()+"\\text file\\100000.txt" # 100 Mega
-    # file = os.getcwd()+"\\text file\\1000000.txt" # 1 Giga
-    # file = os.getcwd()+"\\text file\\10000000.txt" # 8Giga
-
+    file = os.getcwd()+"\\text file\\100000.txt"
     print(asctime())
     IW = IndexWriter(file,dir)
     # IW = IndexWriter.removeIndex(dir)
