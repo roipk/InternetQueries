@@ -1,3 +1,4 @@
+import math
 import os ,os.path
 import operator
 
@@ -31,6 +32,7 @@ class IndexWriter:
     # debug = False
     numBlock = 0
     stopwords={}
+
 
 
     def __init__(self, inputFile, dir):
@@ -98,14 +100,6 @@ class IndexWriter:
             if self.debug:
                 print(tempfile)
                 print(txt)
-            # file1 = s1.read(self.maxread)
-            # newfile1 = '{}'.format(file1)
-            #
-            # print(newfile1)
-
-            # if len(file1) > 0:
-            #     newfile1 = zlib.decompress(file1).decode('utf-8')
-        # print(newfile1)
 
 
     def createTempFolder(self, inputFile):
@@ -126,6 +120,8 @@ class IndexWriter:
 
                         elif len(v) > 2 or '0'<= v <= '9':
                             # if v not in self.stopwords:
+                            if(v == 'asgrids'):
+                                print(v,count)
                             s.append(v)
                             v = ''
                         else:
@@ -138,13 +134,32 @@ class IndexWriter:
                     firstWord = ""
                     frequency = 1
                     s.sort()
+                    doclen = 0
+                    # terms = len(s)
+                    for word in s:
+                        if firstWord == "":
+                            firstWord = word
+                        elif firstWord != word:
+                            doclen += math.pow(math.log10(frequency),2)
+                            firstWord = word
+                            frequency = 1
+                        else:
+                            frequency += 1
+                    if frequency > 1:
+                        doclen += math.pow(math.log10(frequency), 2)
+                    elif firstWord != '':
+                        doclen += math.pow(math.log10(1), 2)
 
+                    if doclen > 0:
+                        doclen = 1 / (math.pow(doclen,0.5))
+                    frequency = 1
+                    firstWord = ""
                     for word in s:
                         if firstWord == "":
                             firstWord = word
                         elif firstWord != word:
                             # bisect.insort(self.indexer, (firstWord, count, frequency))
-                            self.indexer.append((firstWord, count, frequency))
+                            self.indexer.append((firstWord, count,math.log10(frequency)+1 , doclen))
                             firstWord = word
                             # print(firstWord, count, frequency)
                             frequency = 1
@@ -153,10 +168,10 @@ class IndexWriter:
 
                     if frequency > 1:
                         # bisect.insort(self.indexer, (firstWord, count, frequency))
-                        self.indexer.append((firstWord, count, frequency))
+                        self.indexer.append((firstWord, count, math.log10(frequency)+1,doclen))
                     elif firstWord != '':
                         # bisect.insort(self.indexer, (firstWord, count, 1))
-                        self.indexer.append((firstWord, count, 1))
+                        self.indexer.append((firstWord, count, math.log10(1)+1,doclen))
 
 
                     if len(self.indexer) > 0 and (sys.getsizeof(self.indexer) * sys.getsizeof(self.indexer[0])) > self.maxread:
@@ -181,7 +196,7 @@ class IndexWriter:
             print("done create dictionary after {} time ".format(datetime.datetime.now() - self.startTime))
         if len(self.indexer) > 0:
             indexer = self.indexer
-            indexer.append(('0', count, 0))
+            indexer.append(('0', count, 0,0))
             self.indexer = []
             self.sortFile(indexer)
             if self.debug:
@@ -507,12 +522,13 @@ class IndexWriter:
 
 
             if len(s) == 0:
-                s = "{}-{}:{}".format(word[0],word[1],word[2])
+                s = "{}-{}:{};{}".format(word[0],word[1],word[2],word[3])
                 backword = word[0]
             elif backword == word[0]:
-                s += ("_{}:{}".format(word[1],word[2]))
+                # print(word)
+                s += ("_{}:{};{}".format(word[1],word[2],word[3]))
             else:
-                s += ("|{}-{}:{}".format(word[0], word[1],word[2]))
+                s += ("|{}-{}:{};{}".format(word[0], word[1],word[2],word[3]))
                 backword = word[0]
 
         numthread = -1

@@ -87,16 +87,18 @@ class IndexReader:
         token = token.lower()
         self.readCompressFile(token)
         index = self.binary_search(self.wordInFile,token,0,len(self.wordInFile)-1)
+
         toupels = []
         if index < 0:
             return toupels
 
         s = self.wordInFile[index].split("-")
-        s = s[1].split("_")
 
+        s = s[1].split("_")
         for j in s:
-            temp = j.split(':')
-            toupels.append((int(temp[0]), int(temp[1])))
+            tempDoc = j.split(':')
+            tempFr = tempDoc[1].split(';')
+            toupels.append((int(tempDoc[0]), float(tempFr[0]),float(tempFr[1])))
         if(len(toupels)>0):
             from operator import itemgetter
             toupels.sort(key=itemgetter(0))
@@ -117,6 +119,7 @@ class IndexReader:
 
 
     def binary_search(self,arr, val, start, end):
+
         # we need to distinugish whether we should insert
         # before or after the left boundary.
         # imagine [0] is the last step of the binary search
@@ -140,7 +143,7 @@ class IndexReader:
 
         s = arr[end].split("-")
         if s[0] == val:
-            return start
+            return end
         mid = (start + end) // 2
         s = arr[mid].split("-")
 
